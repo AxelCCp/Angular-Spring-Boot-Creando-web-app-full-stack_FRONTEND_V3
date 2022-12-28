@@ -1,0 +1,54 @@
+<detalle-cliente *ngIf="clienteSeleccionado" [cliente] = "clienteSeleccionado"></detalle-cliente>
+
+
+<div class="card border-secondary mb-3" >
+  <div class="card-header">Clientes</div>
+  <div class="card-body text-secondary">
+    <h5 class="card-title">Listado de Clientes</h5>
+
+    <div type="button" class="my-2 text-left">
+      <button *ngIf="authService.hasRole('ROLE_ADMIN')" type="button" class="btn btn-rouded btn-primary" [routerLink]="['/clientes/form']">Crear cliente</button>
+    </div>
+
+    <div *ngIf="clientes?.length==0" class="alert alert-info">
+      No hay regitros en la base de datos.
+    </div>
+
+    <table class="table table-bordered table-striped" *ngIf="clientes?.length>0">
+      <thead>
+        <tr>
+            <th *ngIf="authService.hasRole('ROLE_USER')">###</th>
+          <th>nombre</th>
+          <th>apellido</th>
+          <th>email</th>
+          <th>fecha</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">editar</th>
+          <th *ngIf="authService.hasRole('ROLE_ADMIN')">eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cliente of clientes">
+          <!--<td><button type="button" (click)="abrirModal(cliente)" class="btn btn-success btn-sm">{{cliente.id}}</button></td>  -->                 <!--[routerLink]="['/clientes/ver', cliente.id]"  ESTO SE QUITÓ PARA USAR MODAL-->
+          <td *ngIf="authService.hasRole('ROLE_USER')">
+            <img (click)="abrirModal(cliente)" *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded" style="width:70px; cursor:pointer;">
+                                           <!--                 aquí están las diferencas                                             -->
+            <img (click)="abrirModal(cliente)" *ngIf="!cliente?.foto" src="http://localhost:8080/images/no_usuario.png" alt="Sin foto" class="img-thumbnail rounded" style="width:70px; cursor:pointer;">
+          </td>
+          <td>{{cliente.nombre}}</td>     <!--<td>{{cliente.nombre | uppercase}}</td>-->
+          <td>{{cliente.apellido}}</td>
+          <td>{{cliente.email}}</td>
+          <td>{{cliente.createAt}}</td>   <!--<td>{{cliente.createAt | date:"dd/MM/yyyy"}}</td>-->
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')"><button  type="button" name="editar" [routerLink]="['/clientes/form', cliente.id]" class="btn btn-primary btn-sm">editar</button></td>
+          <td *ngIf="authService.hasRole('ROLE_ADMIN')">
+            <button  type="button" name="eliminar" (click)='delete(cliente)' class="btn btn-danger btn-sm">eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!--SE VALIDA Q EL PAGINADOR EXISTA Y TAMBN SE INJECTA -->
+    <paginator-nav *ngIf="paginador" [paginador] = "paginador"></paginator-nav>
+
+
+
+  </div>
+</div>

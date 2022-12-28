@@ -1,0 +1,98 @@
+
+<div class="abrir-modal animacion fadeIn" *ngIf="modalService.modal">
+
+  <div class="modal" tabindex="-1" role="dialog" style="display:block;"> <!--style="display:block" para q muestre el modal.-->
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{titulo}}</h5>
+          <button type="button" (click)="cerrarModal()" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+
+                <!--*ngIf="cliente" : se pone para q no de error en la consola, cuando se carga primero la página antes q el cliente.-->
+                <ul *ngIf="cliente" class="list-group text-dark mb-3">
+                  <li class="list-group-item">{{cliente.nombre}}</li>
+                  <li class="list-group-item">{{cliente.apellido}}</li>
+                  <li class="list-group-item">{{cliente.email}}</li>
+                  <li class="list-group-item">{{cliente.createAt | date:"fullDate"}}</li>
+                  <li class="list-group-item">{{cliente.region.nombre}}</li>
+                </ul>
+
+                <!--seleccionarFoto($event) : con $event se accede al archivo q se está enviando en el front. -->
+                <div class="input-group mb-3" *ngIf="authService.hasRole('ROLE_ADMIN')">
+                  <input (change)="seleccionarFoto($event)" type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                  <button (click)="subirFoto()" [disabled]="!fotoSeleccionada" class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Subir</button>
+                </div>
+
+                <!-- CLASE 105 MIN 7  : barra se progreso -->
+                <div class="progress" *ngIf="progreso > 0" style="height: 40px;">
+                  <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" aria-label="Warning striped example" [ngStyle]="{width: progreso + '%'}" attr.aria-valuenow="{{progreso}}" aria-valuemin="0" aria-valuemax="100">
+                    {{progreso}}%
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-sm">
+                  <!--ngIf : SI EXISTE EL CLIENTE Y LA FOTO, CARGA LA FOTO-->
+                  <img *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="cerrarModal()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+<!--
+<div class="card bg-dark text-white">
+  <div class="card-header">{{titulo}}</div>
+  <div class="card-body">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+
+          *ngIf="cliente" : se pone para q no de error en la consola, cuando se carga primero la página antes q el cliente.
+          <ul *ngIf="cliente" class="list-group text-dark mb-3">
+            <li class="list-group-item">{{cliente.nombre}}</li>
+            <li class="list-group-item">{{cliente.apellido}}</li>
+            <li class="list-group-item">{{cliente.email}}</li>
+            <li class="list-group-item">{{cliente.createAt | date:"fullDate"}}</li>
+          </ul>
+
+          seleccionarFoto($event) : con $event se accede al archivo q se está enviando en el front.
+          <div class="input-group mb-3">
+            <input (change)="seleccionarFoto($event)" type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+            <button (click)="subirFoto()" [disabled]="!fotoSeleccionada" class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Subir</button>
+          </div>
+
+          CLASE 105 MIN 7  : barra se progreso
+          <div class="progress" *ngIf="progreso > 0" style="height: 40px;">
+            <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" aria-label="Warning striped example" [ngStyle]="{width: progreso + '%'}" attr.aria-valuenow="{{progreso}}" aria-valuemin="0" aria-valuemax="100">
+              {{progreso}}%
+            </div>
+          </div>
+
+        </div>
+        <div class="col-sm">
+            ngIf : SI EXISTE EL CLIENTE Y LA FOTO, CARGA LA FOTO
+            <img *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+-->
