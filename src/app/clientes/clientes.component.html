@@ -17,7 +17,7 @@
     <table class="table table-bordered table-striped" *ngIf="clientes?.length>0">
       <thead>
         <tr>
-            <th *ngIf="authService.hasRole('ROLE_USER')">###</th>
+          <th>###</th>   <!--*ngIf="authService.hasRole('ROLE_USER')"-->
           <th>nombre</th>
           <th>apellido</th>
           <th>email</th>
@@ -29,7 +29,7 @@
       <tbody>
         <tr *ngFor="let cliente of clientes">
           <!--<td><button type="button" (click)="abrirModal(cliente)" class="btn btn-success btn-sm">{{cliente.id}}</button></td>  -->                 <!--[routerLink]="['/clientes/ver', cliente.id]"  ESTO SE QUITÓ PARA USAR MODAL-->
-          <td *ngIf="authService.hasRole('ROLE_USER')">
+          <td>    <!--*ngIf="authService.hasRole('ROLE_USER')"-->
             <img (click)="abrirModal(cliente)" *ngIf="cliente?.foto" src="http://localhost:8080/api/uploads/img/{{cliente.foto}}" alt="{{cliente.foto}}" class="img-thumbnail rounded" style="width:70px; cursor:pointer;">
                                            <!--                 aquí están las diferencas                                             -->
             <img (click)="abrirModal(cliente)" *ngIf="!cliente?.foto" src="http://localhost:8080/images/no_usuario.png" alt="Sin foto" class="img-thumbnail rounded" style="width:70px; cursor:pointer;">
