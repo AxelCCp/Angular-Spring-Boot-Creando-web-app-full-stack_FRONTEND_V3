@@ -6,6 +6,8 @@ import { HttpEventType } from '@angular/common/http';
 import { Input } from '@angular/core';
 import { ModalService } from './modal.service';
 import { AuthService } from '../../usuarios/auth.service';
+import { FacturaService } from '../../facturas/services/factura.service';
+import { Factura } from '../../facturas/models/factura';
 
 @Component({
   selector: 'detalle-cliente',
@@ -14,10 +16,11 @@ import { AuthService } from '../../usuarios/auth.service';
 })
 export class DetalleComponent implements OnInit {
 
-  constructor(clienteService : ClienteService, modalService : ModalService, authService : AuthService) {
+  constructor(clienteService : ClienteService, modalService : ModalService, authService : AuthService, facturaService : FacturaService) {
     this.clienteService = clienteService;
     this.modalService = modalService;
     this.authService = authService;
+    this.facturaService =  facturaService;
   }
 
   ngOnInit(): void {}
@@ -64,6 +67,47 @@ export class DetalleComponent implements OnInit {
     this.progreso = 0;
   }
 
+
+  delete(factura : Factura) : void {
+
+    const swalWithBootstrapButtons = swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success',
+        cancelButton: 'btn btn-danger'
+      },
+      buttonsStyling: false
+    });
+
+
+    swalWithBootstrapButtons.fire({
+      title: 'Está seguro?',
+      text: `¿Seguro que desea eliminar la factura ${factura.descripcion} ?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      //confirmButtonClass: 'btn btn-success',
+      //cancelButtonClass: 'btn btn-danger',
+      confirmButtonText: 'Sí, eliminar!',
+      cancelButtonText: 'No, cancelar!',
+      //buttonsStyling: false,
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.facturaService.delete(factura.id).subscribe(response => {
+          //PARA ACTUALIZAR AUTOMÁTICAMENTE LA LISTA CON EL CLIENTE Q SE ELIMINÓ. SE USA FILTRO.
+          this.cliente.facturas = this.cliente.facturas.filter(f => f !== factura);
+          swalWithBootstrapButtons.fire(
+            'Factura eliminada!',
+            `Factura:  '${factura.descripcion}' eliminada con éxito!`,
+            'success'
+          )
+        })
+      }
+    })
+  }
+
+
   @Input() cliente : Cliente;                         //INPUT : INYECTA LA INSTANCIA DE CLIENTE EN DETALLES COMPONENT.
   private clienteService : ClienteService;
   titulo : string = "Detalle de Cliente";
@@ -71,4 +115,5 @@ export class DetalleComponent implements OnInit {
   progreso : Number = 0;
   modalService : ModalService;
   authService : AuthService;
+  private facturaService : FacturaService;
 }

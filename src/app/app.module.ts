@@ -22,6 +22,12 @@ import { TokenInterceptor } from './usuarios/interceptors/token.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './usuarios/interceptors/auth.interceptor';
 import { DetalleFacturaComponent } from './facturas/detalle-factura.component';
+import { FacturasComponent } from './facturas/facturas.component';
+
+import {MatAutocompleteModule} from '@angular/material/autocomplete';  //CLASE 180
+import {MatInputModule} from '@angular/material/input';                //CLASE 180
+import {MatFormFieldModule} from '@angular/material/form-field';       //CLASE 180
+import { ReactiveFormsModule } from '@angular/forms';                  //CLASE 180
 
 const routes : Routes = [
   {path:'', redirectTo:'/clientes', pathMatch:'full'},    //ESTE ES EL HOME Y REDIRIGE A CLIENTES. PATHMATCH FULL : HACE MATCH COMPLETO CON LA URL.
@@ -32,7 +38,8 @@ const routes : Routes = [
   {path:'clientes/page/:page', component:ClientesComponent}, //RUTA CON PAGE
   //{path:'clientes/ver/:id', component:DetalleComponent},    //SE QUITA PQ SE CAMBIA POR UN MODAL.
   {path:'login', component:LoginComponent},
-  {path:'facturas/:id', component:DetalleFacturaComponent}
+  {path:'facturas/:id', component:DetalleFacturaComponent, canActivate:[AuthGuard, RoleGuard], data: {role:'ROLE_USER'}},
+  {path:'facturas/form/:clienteId', component:FacturasComponent, canActivate:[AuthGuard, RoleGuard], data: {role:'ROLE_ADMIN'}}
 ];
 
 @NgModule({
@@ -46,7 +53,8 @@ const routes : Routes = [
     PaginatorComponent,
     DetalleComponent,
     LoginComponent,
-    DetalleFacturaComponent
+    DetalleFacturaComponent,
+    FacturasComponent
 
   ],
   imports: [
@@ -57,6 +65,10 @@ const routes : Routes = [
     BrowserAnimationsModule,
     //MatDatepickerModule,
     //MatNativeDateModule
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule
   ],
   providers: [
     ClienteService,

@@ -52,6 +52,7 @@ export class FormComponent implements OnInit {
 
   public update() : void{
     console.log(this.cliente);
+    this.cliente.facturas = null; //192 ... ESTO ES PARA EVITAR ACTUALIZAR LAS FACTURAS DEL CLIENTE, CUANDO SE ACTUALIZAN LOS DATOS DEL CLIENTE.
     this.clienteService.update(this.cliente).subscribe(
       (json) => {
         this.router.navigate(['/clientes']);

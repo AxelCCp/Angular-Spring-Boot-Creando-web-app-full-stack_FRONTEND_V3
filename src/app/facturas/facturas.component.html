@@ -1,0 +1,92 @@
+<div class="card bg-light" >
+  <div class="card-header">{{titulo}} : {{factura.descripcion}}</div>
+  <div class="card-body">
+
+    <h4 class="card-title">
+        <a [routerLink]="['/clientes']" class="btn btn-light btn-xs">&laquo; volver</a>
+    </h4>
+
+    <form #facturaForm="ngForm"> <!--PARA DESHABILITAR EL BOTON "crear" EN CASO DE Q EL FORMULARIO TENGA ALGÚN ERROR.-->
+      <div class="form-group row" *ngIf="factura.cliente">  <!--PARA Q SE CARGUE EL FORMULARIO UNA VEZ QUE SE TENGA AL CLIENTE, PARA QUE NO DÉ ERROR EN LA CONSOLA.-->
+        <label for="cliente" class="col-sm-2 col-form-label">cliente</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="cliente" value="{{factura.cliente.nombre}} {{factura.cliente.apellido}}" disabled/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="descripcion" class="col-sm-2 col-form-label">descripción</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" name="descripcion" [(ngModel)]="factura.descripcion" required  #descripcion="ngModel"/>  <!--#descripcion :PARA EXPORTAR EL NGMODEL Q CONTIENE UNA INSTANCIA DEL FORMCONTROL, Q PERMITE SABER SI EL CAMPO ES INVALIDO O NO.-->
+          <div class="alert alert-danger" *ngIf="descripcion.invalid && descripcion.touched">
+            La descripción es requerida.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label for="observacion" class="col-sm-2 col-form-label">observación</label>
+        <div class="col-sm-6">
+          <textarea class="form-control" name="observacion" [(ngModel)]="factura.observacion"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group row">
+          <div class="col-sm-6">
+            <!--180 ... CODIGO COPIAD0 DESDE https://material.angular.io/components/autocomplete/overview-->
+            <mat-form-field >
+              <mat-label>Productos</mat-label>
+              <input type="text"
+                     placeholder="añadir productos"
+                     aria-label="Productos"
+                     matInput
+                     [formControl]="autocompleteControl"
+                     [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="mostrarNombre" (optionSelected)="seleccionarProduto($event)">    <!--mostrarNombre : es un método    //   seleccionarProduto($event) : "$event" ESTE ES EL PRODUCTO SELECCIONADO -->
+                <mat-option *ngFor="let producto of productosFiltrados | async" [value]="producto">
+                  {{producto.nombre}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+      </div>
+
+
+      <div class="alert alert-info my-4" *ngIf="factura.items.length==0">
+        No hay líneas asignadas para la factura. Debe agregar al menos un producto.
+      </div>
+
+
+      <table class="table table-striped table-hover table-sm" *ngIf="factura.items.length > 0">
+        <thead>
+          <tr>
+            <th>producto</th>
+            <th>precio</th>
+            <th>cantidad</th>
+            <th>total</th>
+            <th>eliminar</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of factura.items">
+            <td>{{item.producto.nombre}}</td>
+            <td>{{item.producto.precio}}</td>                                                                            <!--id del producto y  obj evento con el valor de la cantidad-->
+            <td><input type="number" value="{{item.cantidad}}" class="form-control col-sm-4" style="width: 200px;" (change)="actualizarCantidad(item.producto.id, $event)"></td>
+            <td>{{item.calcularImporte()}}</td>
+            <td><button class="btn btn-danger btn-sm" type="button" (click)="eliminarItemFactura(item.producto.id)">X</button></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 *ngIf="factura.items.length > 0" align=right class="float-right">Gran Total: <span class="badge bg-secondary">{{factura.calculargranTotal()}}</span></h3>
+
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <input type="submit" value="Crear Factura" class="btn btn-secondary" (click)="create()" [disabled]="facturaForm.form.invalid || factura.items.length==0"/>
+        </div>
+      </div>
+    </form>
+
+  </div>
+
+</div>

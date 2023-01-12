@@ -11,4 +11,13 @@ export class Factura {
   total : number;
   createAt : string;
 
+
+  calculargranTotal() : number {
+    this.total = 0;
+    this.items.forEach((item:ItemFactura) => {
+      this.total = this.total + item.calcularImporte();
+    });
+    return this.total;
+  }
+
 }
