@@ -738,5 +738,176 @@ CLASE 197
 	
 
 		
-![image](https://github.com/user-attachments/assets/b90c5d6b-028f-4536-bf17-b0895edd94a9)
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+SOCKETS
+
+
+:::::::::::::::::::::::::::::::::::::::
+
+CLASE 210
+
+	SE CREA PROYECTO EN ANGULAR  Y SE CREA ESTA VEZ CON EL ROUTING MODULE:
+	
+		C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular>ng new chat-app
+		? Would you like to add Angular routing? Yes
+		? Which stylesheet format would you like to use? CSS
+		CREATE chat-app/angular.json (3051 bytes)
+		CREATE chat-app/package.json (1071 bytes)
+		CREATE chat-app/README.md (1061 bytes)
+		CREATE chat-app/tsconfig.json (863 bytes)
+		CREATE chat-app/.editorconfig (274 bytes)
+		CREATE chat-app/.gitignore (548 bytes)
+		CREATE chat-app/.browserslistrc (600 bytes)
+		CREATE chat-app/karma.conf.js (1425 bytes)
+		CREATE chat-app/tsconfig.app.json (287 bytes)
+		CREATE chat-app/tsconfig.spec.json (333 bytes)
+		CREATE chat-app/.vscode/extensions.json (130 bytes)
+		CREATE chat-app/.vscode/launch.json (474 bytes)
+		CREATE chat-app/.vscode/tasks.json (938 bytes)
+		CREATE chat-app/src/favicon.ico (948 bytes)
+		CREATE chat-app/src/index.html (293 bytes)
+		CREATE chat-app/src/main.ts (372 bytes)
+		CREATE chat-app/src/polyfills.ts (2338 bytes)
+		CREATE chat-app/src/styles.css (80 bytes)
+		CREATE chat-app/src/test.ts (745 bytes)
+		CREATE chat-app/src/assets/.gitkeep (0 bytes)
+		CREATE chat-app/src/environments/environment.prod.ts (51 bytes)
+		CREATE chat-app/src/environments/environment.ts (658 bytes)
+		CREATE chat-app/src/app/app-routing.module.ts (245 bytes)
+		CREATE chat-app/src/app/app.module.ts (393 bytes)
+		CREATE chat-app/src/app/app.component.html (23364 bytes)
+		CREATE chat-app/src/app/app.component.spec.ts (1079 bytes)
+		CREATE chat-app/src/app/app.component.ts (212 bytes)
+		CREATE chat-app/src/app/app.component.css (0 bytes)
+		√ Packages installed successfully.
+	
+	
+	SE CREA COMPONENTE CHAT:
+	
+		C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>ng g c chat
+		CREATE src/app/chat/chat.component.html (19 bytes)
+		CREATE src/app/chat/chat.component.spec.ts (612 bytes)
+		CREATE src/app/chat/chat.component.ts (267 bytes)
+		CREATE src/app/chat/chat.component.css (0 bytes)
+		UPDATE src/app/app.module.ts (467 bytes)
+		
+		
+	
+	INSTALA BOOTSTRAP , JQUERY Y POPPER EN EL PROYECTO
+	
+		C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>npm i bootstrap jquery popper.js --save
+		npm WARN deprecated popper.js@1.16.1: You can find the new Popper v2 at @popperjs/core, this package is dedicated to the legacy v1
+		
+		added 4 packages, and audited 955 packages in 3s
+		
+		122 packages are looking for funding
+		  run `npm fund` for details
+		
+		found 0 vulnerabilities
+		
+		
+		
+		LUEGO SE AGREGAN EN EL ARCHIVO ANGULAR.JSON
+		
+			  "styles": [
+			              "src/styles.css",
+			              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+			            ],
+			            "scripts": [
+			              "node_modules/jquery/dist/jquery.slim.min.js",
+			              "node_modules/popper.js/dist/umd/popper.min.js",
+			              "node_modules/bootstrap/dist/js/bootstrap.min.js"
+			            ]
+		
+			HECHA A ANDAR LA WEA PA CAXAR SI QUEDÓ BN LA WEA : 
+			
+				C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>ng serve -o
+	
+	
+	
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+CLASE 211
+
+SE INSTALAN LAS LIBRERÍAS PARA EL CLIENTE WEBSOCKET: 
+INSTALACION DE LOS CLIENTES STOMP Y SOCK JS
+
+
+	INSTALA LA VERSIÓN Q SE USA EN EL CURSO, PA Q NO WEBEE LA WEA:
+	C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>npm uninstall @stomp/stompjs
+	
+	removed 1 package, and audited 961 packages in 1s
+	
+	123 packages are looking for funding
+	  run `npm fund` for details
+	
+	found 0 vulnerabilities
+	
+	C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>npm install @stomp/stompjs@5.2.0
+	
+	added 1 package, and audited 962 packages in 3s
+	
+	123 packages are looking for funding
+	  run `npm fund` for details
+	
+	found 0 vulnerabilities
+
+
+
+	https://www.npmjs.com/package/@stomp/stompjs
+	(SE LE AGREGA EL --SAVE PARA Q SE REGISTRE EN EL PACKAGE.JSON).
+	
+		C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>npm i @stomp/stompjs --save
+		
+		added 1 package, removed 1 package, and audited 956 packages in 3s
+		
+		122 packages are looking for funding
+		  run `npm fund` for details
+		
+		found 0 vulnerabilities
+		
+		
+	https://www.npmjs.com/package/sockjs-client
+	
+		C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>npm i sockjs-client --save
+		
+		added 5 packages, and audited 961 packages in 2s
+		
+		123 packages are looking for funding
+		  run `npm fund` for details
+		
+		found 0 vulnerabilities
+		
+	
+
+	LUEGO SE INSTALAN LOS TIPOS PARA SOCKE JS:
+	(--save-dev : PARA GUARDAR EN LA DEPENDENCIA DE DESARROLLO)
+	
+	C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>npm i @types/sockjs-client --save-dev
+	
+	added 1 package, and audited 962 packages in 2s
+	
+	123 packages are looking for funding
+	  run `npm fund` for details
+	
+	found 0 vulnerabilities
+	
+	
+	LUEGO EN EL CHAT COMPONENT SE IMPORTAN LAS CLASES QUE SE VAN A USAR DE ESTAS LIBRERÍAS IMPORTADAS.
+	
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+CLASE 214
+
+SE CREA LA CLASE MENSAJE: 
+
+	C:\Users\Fanta\Documents\11.-SPRING_CON_ANGULAR\angular\chat-app>ng g class chat/models/mensaje
+	CREATE src/app/chat/models/mensaje.spec.ts (158 bytes)
+	CREATE src/app/chat/models/mensaje.ts (25 bytes)
+	
 
